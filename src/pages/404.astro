@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { languages } from "../lib/i18n";
+
+const lang = Astro.url.pathname.startsWith("/en") ? "en" : "de";
+const t = languages[lang];
+---
+
+<BaseLayout title={`404 – ${lang === "de" ? "Seite nicht gefunden" : "Page not found"}`} lang={lang}>
+  <main>
+    <div style="max-width: 680px; margin: 32px auto 12px; text-align: center;">
+        <p style="color: var(--muted); margin: 0 0 10px;">404</p>
+        <h1 style="margin-top: 0;">{lang === "de" ? "Hier hat sich ein kleiner Umweg eingeschlichen." : "Looks like this path took a small detour."}</h1>
+        <p style="color: var(--muted); max-width: 58ch; margin-left: auto; margin-right: auto;">
+          {lang === "de"
+            ? "Diese Seite scheint gerade nicht da zu sein — vielleicht ist sie kurz auf Wanderschaft gegangen."
+            : "This page seems to be away for a little wander."}
+        </p>
+        <p style="color: var(--muted); max-width: 58ch; margin-left: auto; margin-right: auto;">
+          {lang === "de"
+            ? "Keine Sorge, wir finden gemeinsam wieder zurück."
+            : "No worries — we’ll find our way back together."}
+        </p>
+        <p style="margin-top: 30px;">
+          <a href={lang === "de" ? "/de/" : "/en/"}>
+            {lang === "de" ? "← Zurück zur Startseite" : "← Back to home"}
+          </a>
+        </p>
+    </div>
+  </main>
+</BaseLayout>

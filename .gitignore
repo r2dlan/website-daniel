@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+.bun/
+
+# build output
+dist/
+.astro/
+
+# cloudflare / wrangler
+.wrangler/
+workers/.temp/
+
+# caches
+.cache/
+.vite/
+coverage/
+
+# logs
+*.log
+npm-debug.log*
+bun-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# environment files
+.env
+.env.*
+!.env.example
+
+# editor / system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# test artifacts
+test-results/

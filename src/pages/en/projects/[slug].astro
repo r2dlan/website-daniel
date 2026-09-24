@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { readFile } from "node:fs/promises";
+import { languages } from "../../../lib/i18n";
+
+const PROJECT_FILES: Record<string, string> = {
+  "calm-start": "src/content/projects/calm-start.md",
+};
+
+function parseFrontmatter(source: string) {
+  const match = source.match(/^---\n([\s\S]*?)\n---/);
+  if (!match) return {} as Record<string, unknown>;
+
+  const lines = match[1].split("\n");
+  const data: Record<string, unknown> = {};
+  let currentKey: string | null = null;
+
+  for (const line of lines) {
+    const keyMatch = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+    if (keyMatch) {
+      currentKey = keyMatch[1];
+      const value = keyMatch[2];
+      if (value === "") data[currentKey] = [];
+      else if (value === "true" || value === "false") data[currentKey] = value === "true";
+      else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) data[currentKey] = new Date(value);
+      else data[currentKey] = value;
+      continue;
+    }
+
+    const listMatch = line.match(/^\s+-\s+(.*)$/);
+    if (listMatch && currentKey) {
+      const existing = data[currentKey];
+      if (Array.isArray(existing)) existing.push(listMatch[1]);
+    }
+  }
+
+  return data;
+}
+
+export async function getStaticPaths() {
+  return [{ params: { slug: "calm-start" } }];
+}
+
+const { slug } = Astro.params;
+const file = PROJECT_FILES[slug];
+if (!file) {
+  throw new Error(`Unknown project slug: ${slug}`);
+}
+
+const source = await readFile(file, "utf8");
+const frontmatter = parseFrontmatter(source) as {
+  title: string;
+  excerpt: string;
+  date: Date;
+  topics: string[];
+};
+const t = languages.en;
+---
+
+<BaseLayout title={frontmatter.title} lang="en">
+  <main>
+    <article style="max-width: 760px;">
+      <p style="color: var(--muted);"><a href="/en/projects/">{t.backToProjects}</a></p>
+      <h1>{frontmatter.title}</h1>
+      <p style="color: var(--muted);">{frontmatter.excerpt}</p>
+      <div style="display:flex; gap: 8px; flex-wrap: wrap; margin: 18px 0 28px;">
+        {frontmatter.topics.map((topic) => (
+          <span class="filter-chip">{topic}</span>
+        ))}
+      </div>
+      <p>The full project text can live here later.</p>
+    </article>
+  </main>
+</BaseLayout>

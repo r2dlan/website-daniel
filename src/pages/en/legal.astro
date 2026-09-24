@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { languages } from "../../lib/i18n";
+
+const lang = "en";
+const t = languages[lang];
+---
+
+<BaseLayout title={`${t.legalTitle} — Daniel Andres`} lang={lang}>
+  <main>
+    <article class="card" style="padding: 32px;">
+      <p class="eyebrow">{t.legalTitle}</p>
+      <h1>{t.legalTitle}</h1>
+      <p>
+        Daniel Andres<br />
+        Rendsburger Str. 39c<br />
+        24794 Borgstedt<br />
+        Schleswig-Holstein<br />
+        Germany
+      </p>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,6 @@
+---
+import { redirect } from "astro:content";
+
+export async function GET() {
+  return Response.redirect(new URL("/en/legal/", Astro.site), 307);
+}

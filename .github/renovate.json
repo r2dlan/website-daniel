@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "timezone": "Europe/Berlin",
+  "schedule": ["before 7am on monday"],
+  "packageRules": [
+    {
+      "matchManagers": ["bun"],
+      "groupName": "astro and bun tooling"
+    },
+    {
+      "matchPackageNames": ["astro", "@astrojs/check", "typescript", "vitest", "prettier", "prettier-plugin-astro", "wrangler"],
+      "groupName": "project tooling"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ],
+  "ignoreDeps": [],
+  "enabledManagers": ["bun", "github-actions"]
+}

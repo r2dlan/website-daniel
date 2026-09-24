@@ -1,0 +1,34 @@
+{
+  "name": "website-daniel",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "engines": {
+    "bun": ">=1.4.2 <2"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "check": "astro check",
+    "test": "vitest run",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "validate": "bun run format:check && bun run check && bun run build",
+    "preview": "astro preview",
+    "preview:cloudflare": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy"
+  },
+  "dependencies": {
+    "astro": "7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "prettier": "3.9.9",
+    "prettier-plugin-astro": "1.0.1",
+    "typescript": "6.0.3",
+    "vitest": "4.1.6",
+    "wrangler": "4.138.0"
+  }
+}

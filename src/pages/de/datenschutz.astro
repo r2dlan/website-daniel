@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { languages } from "../../lib/i18n";
+
+const lang = "de";
+const t = languages[lang];
+---
+
+<BaseLayout title={`${t.privacyTitle} — Daniel Andres`} lang={lang}>
+  <main>
+    <article class="card" style="padding: 32px;">
+      <p class="eyebrow">{t.legalTitle}</p>
+      <h1>{t.privacyTitle}</h1>
+      <p>{t.privacyIntro}</p>
+      <h2 style="margin-top: 28px; font-size: 1.1rem;">Hosting und Auslieferung</h2>
+      <p>{t.privacyFonts}</p>
+      <p>{t.privacyCloudflare}</p>
+      <p>{t.privacyLogs}</p>
+      <h2 style="margin-top: 28px; font-size: 1.1rem;">Kontaktformular</h2>
+      <p>{t.privacyContact}</p>
+      <p>{t.privacyStorage}</p>
+      <h2 style="margin-top: 28px; font-size: 1.1rem;">Cookies und Tracking</h2>
+      <p>{t.privacySocial}</p>
+      <p>{t.privacyCookies}</p>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+import { type LanguageCode } from "../lib/i18n";
+
+const { lang = "de", path = "/" } = Astro.props as { lang?: LanguageCode; path?: string };
+---
+
+<nav class="language-switcher" aria-label="Language switcher">
+  <a class={`language-switcher__item ${lang === "de" ? "is-active" : ""}`} href="/de/" aria-label="Deutsch">
+    <span aria-hidden="true">DE</span>
+  </a>
+  <span class="language-switcher__divider" aria-hidden="true">|</span>
+  <a class={`language-switcher__item ${lang === "en" ? "is-active" : ""}`} href="/en/" aria-label="English">
+    <span aria-hidden="true">EN</span>
+  </a>
+</nav>

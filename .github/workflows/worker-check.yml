@@ -1,0 +1,17 @@
+name: Worker Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate-worker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check worker file
+        run: test -f workers/contact.ts

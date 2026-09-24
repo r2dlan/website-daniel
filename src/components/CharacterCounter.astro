@@ -1,0 +1,31 @@
+---
+const { max = 5000, textareaId = "message" } = Astro.props as {
+  max?: number;
+  textareaId?: string;
+};
+---
+
+<div class="character-counter" data-max={max} data-textarea-id={textareaId}>
+  <span class="character-counter__used">0</span>
+  <span>/</span>
+  <span class="character-counter__max">{max}</span>
+</div>
+
+<script is:inline>
+  const root = document.currentScript?.previousElementSibling;
+  if (root instanceof HTMLElement) {
+    const textareaId = root.dataset.textareaId;
+    const max = Number(root.dataset.max || 5000);
+    const textarea = textareaId ? document.getElementById(textareaId) : null;
+    const used = root.querySelector(".character-counter__used");
+
+    const update = () => {
+      if (used && textarea instanceof HTMLTextAreaElement) {
+        used.textContent = String(textarea.value.length);
+      }
+    };
+
+    update();
+    textarea?.addEventListener("input", update);
+  }
+</script>

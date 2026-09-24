@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CharacterCounter from "../../components/CharacterCounter.astro";
+import { languages } from "../../lib/i18n";
+
+const contactEndpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "https://YOUR-WORKER.example.workers.dev/contact";
+
+const lang = "de";
+const t = languages[lang];
+---
+
+<BaseLayout title={t.browserTitle} lang={lang}>
+  <main>
+    <section class="card home-hero home-hero--split">
+      <div class="home-hero__content">
+        <p class="hero-name">{t.heroLabel}</p>
+        <h1>{t.heroSubtitle}</h1>
+        <div class="section-text section-text--hero">
+          <p>Mich begeistert Technik – aber noch mehr begeistert mich, was man mit ihr möglich machen kann. Ich möchte verstehen, wie Dinge funktionieren, hinterfrage bestehende Lösungen und probiere gerne aus, ob es nicht auch einfacher, besser oder ganz anders geht.</p>
+          <p>Dabei entstehen immer wieder neue Ideen und Projekte: mal rund um Software, Cloud und künstliche Intelligenz, mal beim Bauen und Experimentieren und manchmal auch einfach aus einer spontanen Idee heraus, bei der ich wissen möchte: Funktioniert das eigentlich?</p>
+          <p>Ich mag klare, pragmatische Lösungen und Dinge, die einen echten Nutzen haben. Gleichzeitig gehört für mich dazu, neugierig zu bleiben, Neues auszuprobieren und auch Ideen zu verfolgen, bei denen am Anfang noch gar nicht klar ist, wohin sie führen.</p>
+          <p>Diese Seite ist deshalb kein fertiges Portfolio, sondern eher ein persönlicher Ort für das, was mich beschäftigt: Projekte, Erfahrungen, Gedanken und Dinge, die ich unterwegs lerne.</p>
+          <p>Und vermutlich wird sie nie ganz fertig sein. Das wäre schließlich auch ein bisschen langweilig.</p>
+        </div>
+        <p><a class="button button--primary" href={t.projectsPath}>{t.heroCta}</a></p>
+      </div>
+      <div class="home-hero__visual" aria-hidden="true">
+        <div class="home-hero__art">
+          <img src="/hero-portrait.png" alt="" loading="eager" decoding="async" />
+        </div>
+      </div>
+    </section>
+
+    <section class="card home-section home-experience">
+      <div class="home-experience__header">
+        <p class="eyebrow">{t.experienceLabel}</p>
+      </div>
+      <div class="home-experience__list">
+        {t.experience.map((item) => (
+          <details class="home-experience__item" open={item.year === "2022 – heute"}>
+            <summary>
+              <div class="home-experience__rail" aria-hidden="true">
+                <span class="home-experience__dot"></span>
+              </div>
+              <div class="home-experience__body home-experience__summary">
+                <div class="home-experience__summary-top">
+                  <p class="home-experience__meta">{item.year}</p>
+                  <span class="home-experience__toggle" data-toggle-label>{item.year === "2022 – heute" ? "Weniger" : "Mehr"}</span>
+                </div>
+                <h2>{item.role}</h2>
+                <p class="home-experience__company">{item.company} · {item.location}</p>
+              </div>
+            </summary>
+            <div class="home-experience__body home-experience__details">
+              <ul>
+                {item.bullets.map((point) => <li>{point}</li>)}
+              </ul>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <script is:inline>
+      document.querySelectorAll(".home-experience__item").forEach((details) => {
+        const toggle = details.querySelector("[data-toggle-label]");
+        if (!toggle) return;
+
+        const sync = () => {
+          toggle.textContent = details.open ? "Weniger" : "Mehr";
+        };
+
+        sync();
+        details.addEventListener("toggle", sync);
+      });
+    </script>
+
+    <section class="card home-contact">
+      <div class="home-contact__intro">
+        <p class="eyebrow">{t.contactLabel}</p>
+        <p>{t.contactIntro}</p>
+      </div>
+      <form class="home-contact__form" data-contact-form data-endpoint={contactEndpoint}>
+        <label>
+          <span class="sr-only">{t.contactPlaceholderEmail}</span>
+          <input type="email" name="email" placeholder={t.contactPlaceholderEmail} required />
+        </label>
+        <label class="sr-only" aria-hidden="true">
+          Website
+          <input type="text" name="website" tabindex="-1" autocomplete="off" />
+        </label>
+        <label>
+          <span class="sr-only">Nachricht</span>
+          <textarea id="message" name="message" maxlength="5000" rows="6" placeholder={t.contactPlaceholderMessage} required></textarea>
+        </label>
+        <CharacterCounter textareaId="message" max={5000} />
+        <button class="button button--dark" type="submit">{t.contactSubmit}</button>
+        <p class="home-contact__status" aria-live="polite" data-contact-status></p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+      const forms = document.querySelectorAll("[data-contact-form]");
+      forms.forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const target = event.currentTarget;
+          if (!(target instanceof HTMLFormElement)) return;
+
+          const endpoint = target.dataset.endpoint;
+          if (!endpoint) return;
+
+          const status = target.querySelector("[data-contact-status]");
+          if (status instanceof HTMLElement) {
+            status.className = "home-contact__status";
+            status.textContent = "";
+          }
+
+          const data = new FormData(target);
+          const response = await fetch(endpoint, {
+            method: "POST",
+            body: data,
+          });
+
+          if (response.ok) {
+            target.reset();
+            if (status instanceof HTMLElement) {
+              status.textContent = "Danke! Deine Nachricht wurde verschickt.";
+              status.classList.add("home-contact__status--success");
+            }
+          } else {
+            if (status instanceof HTMLElement) {
+              status.textContent = "Leider konnte die Nachricht gerade nicht gesendet werden.";
+              status.classList.add("home-contact__status--error");
+            }
+          }
+        });
+      });
+    </script>
+</BaseLayout>

@@ -1,0 +1,8 @@
+---
+const { text } = Astro.props as { text: string };
+const paragraphs = text.split(/\n\n+/).map((paragraph) => paragraph.trim()).filter(Boolean);
+---
+
+<div class="section-text">
+  {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+</div>

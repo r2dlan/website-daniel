@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { languages } from "../lib/i18n";
+
+const lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "de";
+const t = languages[lang];
+---
+
+<BaseLayout title={t.title} lang={lang}>
+  <main>
+    <section class="card" style="padding: 48px; background: var(--soft);">
+      <h1>{t.title}</h1>
+      <p>{t.intro}</p>
+      <p><a href={`/${lang}/${lang === "en" ? "projects" : "projekte"}/`}>{t.projectsLink}</a></p>
+      <p style="color: var(--muted); font-size: 0.95rem;">{t.languageHint}</p>
+    </section>
+  </main>
+</BaseLayout>

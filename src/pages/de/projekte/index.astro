@@ -1,0 +1,140 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { languages } from "../../../lib/i18n";
+import { getProjectTopics, getProjects } from "../../../lib/projects";
+import { projectDateLabel, projectTopics } from "../../../lib/project-page";
+
+const lang = "de";
+const t = languages[lang];
+
+const posts = await getProjects(lang);
+const topics = await getProjectTopics(lang);
+const pageSizes = [10, 15, 20, 30];
+---
+
+<BaseLayout title={t.projectsTitle} lang={lang}>
+  <main>
+    <section>
+      <h1>{t.projectsTitle}</h1>
+      <p>{t.projectsIntro}</p>
+
+      <div class="project-filters">
+        <a class="filter-chip is-active" href="/de/projekte/?topic=all">Alle</a>
+        {topics.map((topic) => (
+          <a class="filter-chip" href={`/de/projekte/?topic=${encodeURIComponent(topic)}`}>
+            {topic}
+          </a>
+        ))}
+      </div>
+
+      <div class="project-pagination-controls">
+        <label class="project-pagination-select">
+          <span>Pro Seite</span>
+          <select id="project-page-size" aria-label="Projekte pro Seite">
+            {pageSizes.map((size) => (
+              <option value={size}>{size}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="project-list" id="project-list">
+      {posts.map((post, index) => (
+        <article class="card project-card" data-index={index} data-topics={post.data.topics.join("|")}>
+          <p class="project-card__date">{projectDateLabel(post.data.date, "de-DE")}</p>
+          <h2>{post.data.title}</h2>
+          <p class="project-card__excerpt">{post.data.excerpt}</p>
+          <div class="project-card__topics">
+            {projectTopics(post).map((topic) => (
+              <span class="filter-chip">
+                {topic}
+              </span>
+            ))}
+          </div>
+          <a href={`/de/projekte/${post.slug}/`}>{t.readProject}</a>
+        </article>
+      ))}
+    </section>
+
+    <nav class="project-pagination" aria-label="Projektnavigation">
+      <button type="button" class="project-pagination__button" data-page-nav="prev">Zurück</button>
+      <span class="project-pagination__status" data-page-status></span>
+      <button type="button" class="project-pagination__button" data-page-nav="next">Weiter</button>
+    </nav>
+  </main>
+
+    <script>
+      const normalize = (value) => value.trim().toLowerCase();
+      const params = new URLSearchParams(window.location.search);
+      const topic = normalize(params.get("topic") ?? "all");
+      const pageSizeParam = Number.parseInt(params.get("pageSize") ?? "10", 10);
+      const pageSize = [10, 15, 20, 30].includes(pageSizeParam) ? pageSizeParam : 10;
+      let page = Math.max(1, Number.parseInt(params.get("page") ?? "1", 10) || 1);
+
+      const pageSizeSelect = document.querySelector("#project-page-size");
+      const chips = Array.from(document.querySelectorAll(".project-filters .filter-chip"));
+      const cards = Array.from(document.querySelectorAll(".project-list .project-card"));
+      const prevButton = document.querySelector('[data-page-nav="prev"]');
+      const nextButton = document.querySelector('[data-page-nav="next"]');
+      const status = document.querySelector("[data-page-status]");
+
+      if (pageSizeSelect instanceof HTMLSelectElement) {
+        pageSizeSelect.value = String(pageSize);
+        pageSizeSelect.addEventListener("change", () => {
+          const next = new URL(window.location.href);
+          next.searchParams.set("pageSize", pageSizeSelect.value);
+          next.searchParams.set("page", "1");
+          window.location.href = next.toString();
+        });
+      }
+
+    chips.forEach((chip) => {
+      const chipTopic = chip.textContent ? normalize(chip.textContent) : "";
+      chip.classList.toggle("is-active", topic === "all" ? chipTopic === "all" : chipTopic === topic);
+      chip.setAttribute("aria-current", topic === "all" ? (chipTopic === "all" ? "page" : "false") : (chipTopic === topic ? "page" : "false"));
+    });
+
+      const matchingCards = cards.filter((card) => {
+      const tags = (card.getAttribute("data-topics") ?? "").split("|").map(normalize).filter(Boolean);
+        return topic === "all" || tags.includes(topic);
+      });
+
+      const totalPages = Math.max(1, Math.ceil(matchingCards.length / pageSize));
+      page = Math.min(page, totalPages);
+
+      matchingCards.forEach((card, index) => {
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        card.hidden = index < start || index >= end;
+      });
+
+      cards.forEach((card) => {
+        const tags = (card.getAttribute("data-topics") ?? "").split("|").map(normalize).filter(Boolean);
+        const matches = topic === "all" || tags.includes(topic);
+        if (!matches) card.hidden = true;
+      });
+
+      if (status) status.textContent = `Seite ${page} von ${totalPages}`;
+
+      if (prevButton instanceof HTMLButtonElement) {
+        prevButton.disabled = page <= 1;
+        prevButton.addEventListener("click", () => {
+          const next = new URL(window.location.href);
+          next.searchParams.set("page", String(Math.max(1, page - 1)));
+          next.searchParams.set("pageSize", String(pageSize));
+          window.location.href = next.toString();
+        });
+      }
+
+      if (nextButton instanceof HTMLButtonElement) {
+        nextButton.disabled = page >= totalPages;
+        nextButton.addEventListener("click", () => {
+          const next = new URL(window.location.href);
+          next.searchParams.set("page", String(Math.min(totalPages, page + 1)));
+          next.searchParams.set("pageSize", String(pageSize));
+          window.location.href = next.toString();
+        });
+      }
+  </script>
+</BaseLayout>
