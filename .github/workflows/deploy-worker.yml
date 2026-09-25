@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - "workers/locale-router.ts"
-      - "wrangler.jsonc"
+      - "wrangler.worker.jsonc"
   workflow_dispatch:
 
 jobs:
