@@ -2,7 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { languages } from "../lib/i18n";
 
-const lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "de";
+const lang = Astro.url.searchParams.get("lang") === "de" ? "de" : "en";
+
+if (!Astro.url.searchParams.has("lang")) {
+  return Astro.redirect(`/${lang}/`, 307);
+}
+
 const t = languages[lang];
 ---
 

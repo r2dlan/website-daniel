@@ -1,29 +1,27 @@
-# Cloudflare Routing Vorbereitung
+# Cloudflare Routing
 
 ## Ziel
 
-Später soll Cloudflare anhand der Region die passende Sprache wählen.
-
-## Gedanke
-
-- DACH-Region → Deutsch
-- Rest der Welt → Englisch
-- Manuelle Sprachwahl bleibt immer möglich
+Die Webseite soll auf Cloudflare sauber ausgeliefert werden und die Sprachwahl über die Root-Route unterstützen.
 
 ## Aktueller Stand
 
-- Deutsch liegt unter `/de/`
-- Englisch liegt unter `/en/`
-- Startseite kann später per Cloudflare weiterleiten
+- Deutsch unter `/de/`
+- Englisch unter `/en/`
+- Root-Route leitet auf Deutsch oder Englisch weiter
+- manuelle Sprachwahl über `?lang=de` und `?lang=en` bleibt möglich
+- alte Blog-Routen sind entfernt
+- Root-Weiterleitung läuft als Cloudflare-Routing-Logik, nicht über Astro
+- Fallback ohne Länderinfo ist Englisch
 
-## Nächster Schritt später
+## Routing-Logik
 
-- `request.cf.country` auswerten
-- Root-Request auf passende Sprachroute lenken
-- Manuelle Sprachwahl respektieren
+- `AT`, `CH`, `DE`, `LI`, `LU` → Deutsch
+- alles andere → Englisch
 
-## Technische Logik
+## Technische Umsetzung
 
-- `AT`, `CH`, `DE`, `LI`, `LU` → `/de/`
-- alles andere → `/en/`
-- manuelle Auswahl über `?lang=de` oder `?lang=en` bleibt möglich
+- Sprachwahl in `src/middleware.ts`
+- Root-Sprachrouting über Cloudflare-Worker-Logik in `workers/locale-router.ts`
+- Canonical-/Trailing-Slash-Verhalten zentral im Routing geregelt
+- 404-Seite ist projektintern umgesetzt, ohne Astro-Hinweise im UI

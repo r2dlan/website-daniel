@@ -2,22 +2,22 @@
 
 ## Ziel
 
-Die Webseite soll Deutsch und Englisch unterstützen.
+Die Webseite unterstützt Deutsch und Englisch und kann über die Root-Route automatisch in die passende Sprache leiten.
 
 ## Verhalten
 
-- **DACH** → Deutsch als Standard
-- **Sonstige Regionen** → Englisch als Fallback
-- Sprache soll zusätzlich manuell auswählbar bleiben
+- DACH-Region → Deutsch als Standard
+- Rest der Welt → Englisch als Fallback
+- manuelle Sprachwahl bleibt möglich
 
-## Vorschlag für späteres Cloudflare-Routing
+## Aktuelle Routen
 
-- Regionserkennung über Cloudflare
-- Weiterleitung auf passende Sprachversion
-- Fallback auf Englisch, wenn keine DACH-Region erkannt wird
+- Deutsch: `/de/`
+- Englisch: `/en/`
+- Projekte: `/de/projekte/` und `/en/projects/`
 
-## Projektstruktur
+## Umsetzung
 
-- `/de` bzw. `/` für Deutsch
-- `/en` für Englisch
-- Blog ebenfalls sprachgetrennt
+- Spracherkennung in `workers/locale-router.ts`
+- Sprachlinks und Pfade zentral in `src/lib/i18n.ts`
+- Sprache kann weiterhin per Query `?lang=de` oder `?lang=en` gewählt werden

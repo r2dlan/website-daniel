@@ -34,8 +34,8 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 - ein dezenter Call-to-Action
 
 ### 2. Über mich / Über die Marke
-- 2–3 kurze Absätze
-- Fokus auf Haltung und Qualität
+- 2–5 kurze Absätze
+- Fokus auf Haltung, Qualität und Persönlichkeit
 
 ### 3. Leistungen / Themen
 - max. 3 Karten oder Punkte
@@ -43,7 +43,8 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 
 ### 4. Kontakt
 - sehr schlicht
-- vielleicht nur eine E-Mail oder ein Button
+- direkt im Seitenverlauf eingebettet
+- Formular mit minimaler Reibung
 
 ## Farbwelt
 
@@ -52,12 +53,15 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 - Akzent: kühles Salbei oder zartes Grau-Grün
 - Linie/Border: sehr helles Grau
 
-## Blog
+## Projekte
 
-- separate Blog-Seite, nicht auf der Startseite prominent
-- Einstieg über Menü oder kleinen Link
-- Beiträge als ruhiges Archiv
-- einzelne Beitragsseiten mit viel Weißraum
+- separate Projektseite im Menü
+- Beiträge als Markdown-Artikel
+- optional mehrere Bilder pro Beitrag
+- Lightbox für größere Bildansicht
+- Filter nach Themen
+- Pagination ab mehr als 10 Einträgen
+- viel Weißraum und ruhige Typografie
 
 ## Typografie
 
@@ -67,7 +71,7 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 
 ## Layout
 
-- Max-Breite: ca. 1100–1200px
+- Max-Breite: ca. 1120px
 - Großzügige vertikale Abstände
 - Viele ruhige Flächen
 - Einfache Spaltenstruktur

@@ -1,21 +1,27 @@
-# Projektstruktur
+# Architektur
 
 ## Ziel
 
-Webseite mit Astro, später auf Cloudflare gehostet.
+Persönliche Astro-Webseite mit statischem Build, zweisprachigen Seiten, Markdown-Projekten, Bilder-Support und Cloudflare-Deployment.
 
-## Vorgesehene Ordnerstruktur
+## Aktuelle Struktur
 
-- `src/pages` — Seiten/Routing
-- `src/layouts` — Layouts
-- `src/components` — wiederverwendbare UI-Bausteine
-- `src/content` — Content Collections, falls benötigt
-- `public` — statische Dateien
-- `.github/workflows` — CI/CD
-- `opencode` — Agenten- und Arbeitsdokumentation
+- `src/pages/` — Seiten und Routing
+- `src/layouts/` — globale Layouts
+- `src/components/` — wiederverwendbare UI-Bausteine
+- `src/content/projects/` — Projektbeiträge als Markdown
+- `src/content.config.ts` — Content-Collection-Schema
+- `src/lib/` — Hilfsfunktionen, Routing, i18n, Markdown-Helper
+- `src/styles/` — globale Styles
+- `public/` — statische Dateien und Bilder
+- `workers/` — Cloudflare Worker für das Kontaktformular
+- `.github/workflows/` — CI, Deploy und Worker-Check
+- `.opencode/` — OpenCode-Agenten und Arbeitskontext
 
 ## Leitlinien
 
-- Erst Struktur, dann Inhalte
-- Kleine, nachvollziehbare Commits
-- Änderungen vor dem Deploy immer prüfen
+- Content möglichst zentral und wiederverwendbar halten
+- UI-Texte über `src/lib/i18n.ts` pflegen
+- Projekte als Markdown mit optionalen Bildern ablegen
+- Kontaktformular über Worker statt direkter Mail-Logik im Frontend lösen
+- Änderungen vor Deploy und Merge prüfen

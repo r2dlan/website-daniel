@@ -1,78 +1,132 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { readFile } from "node:fs/promises";
+import { getCollection } from "astro:content";
 import { languages } from "../../../lib/i18n";
+import { renderMarkdown } from "../../../lib/markdown";
+import { initImageLightbox } from "../../../lib/lightbox";
 
 const PROJECT_FILES: Record<string, string> = {
   "ruehriger-start": "src/content/projects/ruehriger-start.md",
   "ruehriger-star2": "src/content/projects/ruehriger-star2.md",
 };
 
-function parseFrontmatter(source: string) {
-  const match = source.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return {} as Record<string, unknown>;
+function renderMarkdown(text: string) {
+  const escapeHtml = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-  const lines = match[1].split("\n");
-  const data: Record<string, unknown> = {};
-  let currentKey: string | null = null;
+  const inline = (value: string) =>
+    escapeHtml(value)
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+
+  const lines = text.split(/\r?\n/);
+  const output: string[] = [];
+  let listOpen = false;
+
+  const closeList = () => {
+    if (listOpen) {
+      output.push("</ul>");
+      listOpen = false;
+    }
+  };
 
   for (const line of lines) {
-    const keyMatch = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
-    if (keyMatch) {
-      currentKey = keyMatch[1];
-      const value = keyMatch[2];
-      if (value === "") data[currentKey] = [];
-      else if (value === "true" || value === "false") data[currentKey] = value === "true";
-      else if (/^\d{4}-\d{2}-\d{2}$/.test(value)) data[currentKey] = new Date(value);
-      else data[currentKey] = value;
+    const trimmed = line.trim();
+    if (!trimmed) {
+      closeList();
       continue;
     }
 
-    const listMatch = line.match(/^\s+-\s+(.*)$/);
-    if (listMatch && currentKey) {
-      const existing = data[currentKey];
-      if (Array.isArray(existing)) existing.push(listMatch[1]);
+    if (trimmed.startsWith("## ")) {
+      closeList();
+      output.push(`<h2>${inline(trimmed.slice(3))}</h2>`);
+      continue;
     }
+
+    if (trimmed.startsWith("# ")) {
+      closeList();
+      output.push(`<h1>${inline(trimmed.slice(2))}</h1>`);
+      continue;
+    }
+
+    if (trimmed.startsWith("- ")) {
+      if (!listOpen) {
+        output.push("<ul>");
+        listOpen = true;
+      }
+      output.push(`<li>${inline(trimmed.slice(2))}</li>`);
+      continue;
+    }
+
+    closeList();
+    output.push(`<p>${inline(trimmed)}</p>`);
   }
 
-  return data;
+  closeList();
+  return output.join("");
 }
 
 export async function getStaticPaths() {
-  return [
-    { params: { slug: "ruehriger-start" } },
-    { params: { slug: "ruehriger-star2" } },
-  ];
+  const entries = await getCollection("projects", (entry) => entry.data.language === "de");
+  return entries.map((entry) => {
+    const slug = entry.id.split("/").pop()?.replace(/\.md$/, "") ?? entry.id;
+    return { params: { slug }, props: { entry } };
+  });
 }
 
-const { slug } = Astro.params;
-const file = PROJECT_FILES[slug];
-if (!file) {
-  throw new Error(`Unknown project slug: ${slug}`);
-}
-
-const source = await readFile(file, "utf8");
-const frontmatter = parseFrontmatter(source) as {
-  title: string;
-  excerpt: string;
-  date: Date;
-  topics: string[];
+const { entry } = Astro.props as {
+  entry: Awaited<ReturnType<typeof getCollection>>[number];
 };
+const frontmatter = entry.data;
 const t = languages.de;
+const slug = entry.id.split("/").pop()?.replace(/\.md$/, "") ?? entry.id;
+const file = PROJECT_FILES[slug];
+const source = file ? await readFile(file, "utf8") : "";
+const content = renderMarkdown(source.split("---").slice(2).join("---").trim());
 ---
 
 <BaseLayout lang="de">
   <main>
-    <article style="max-width: 760px;">
+    <article class="project-detail">
       <p style="color: var(--muted);"><a href="/de/projekte/">{t.backToProjects}</a></p>
       <h1>{frontmatter.title}</h1>
       <p style="color: var(--muted);">{frontmatter.excerpt}</p>
-      <div style="display:flex; gap: 8px; flex-wrap: wrap; margin: 18px 0 28px;">
+      <div style="display:flex; gap: 8px; flex-wrap: wrap; margin: 18px 0 40px;">
         {frontmatter.topics.map((topic) => (
           <span class="filter-chip">{topic}</span>
         ))}
       </div>
-      <p>Hier kann später der vollständige Projekttext stehen.</p>
+      <div set:html={content} />
+      {frontmatter.images.length > 0 && (
+        <div class="project-gallery">
+          {frontmatter.images.map((image) => (
+            <figure style="margin: 0;">
+              <button type="button" class="project-image-trigger" data-full-src={image.src} data-full-alt={image.alt} aria-label={`${t.imageEnlarge}: ${image.alt}`}>
+                <img src={image.src} alt={image.alt} style="width: 100%; max-width: 280px; height: auto; display: block; border-radius: 16px;" />
+              </button>
+              {image.caption && <figcaption style="color: var(--muted); font-size: 0.92rem; margin-top: 8px;">{image.caption}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      )}
     </article>
   </main>
+
+  <dialog class="project-lightbox" aria-label={t.imageView}>
+    <button class="project-lightbox__nav project-lightbox__nav--prev" type="button" aria-label={t.imagePrev}>‹</button>
+    <button class="project-lightbox__close" type="button" aria-label={t.imageClose}>×</button>
+    <button class="project-lightbox__nav project-lightbox__nav--next" type="button" aria-label={t.imageNext}>›</button>
+    <p class="project-lightbox__counter" aria-live="polite"></p>
+    <img class="project-lightbox__image" alt="" />
+  </dialog>
+
+  <script>
+    import { initImageLightbox } from "../../../lib/lightbox";
+    initImageLightbox();
+  </script>
 </BaseLayout>

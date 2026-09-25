@@ -11,6 +11,15 @@ const projects = defineCollection({
     language: z.enum(["de", "en"]),
     translationKey: z.string().optional(),
     featured: z.boolean().default(false),
+    images: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        }),
+      )
+      .default([]),
   }),
 });
 

@@ -16,11 +16,9 @@ const t = languages[lang];
         <p class="hero-name">{t.heroLabel}</p>
         <h1>{t.heroSubtitle}</h1>
         <div class="section-text section-text--hero">
-          <p>Mich begeistert Technik – aber noch mehr begeistert mich, was man mit ihr möglich machen kann. Ich möchte verstehen, wie Dinge funktionieren, hinterfrage bestehende Lösungen und probiere gerne aus, ob es nicht auch einfacher, besser oder ganz anders geht.</p>
-          <p>Dabei entstehen immer wieder neue Ideen und Projekte: mal rund um Software, Cloud und künstliche Intelligenz, mal beim Bauen und Experimentieren und manchmal auch einfach aus einer spontanen Idee heraus, bei der ich wissen möchte: Funktioniert das eigentlich?</p>
-          <p>Ich mag klare, pragmatische Lösungen und Dinge, die einen echten Nutzen haben. Gleichzeitig gehört für mich dazu, neugierig zu bleiben, Neues auszuprobieren und auch Ideen zu verfolgen, bei denen am Anfang noch gar nicht klar ist, wohin sie führen.</p>
-          <p>Diese Seite ist deshalb kein fertiges Portfolio, sondern eher ein persönlicher Ort für das, was mich beschäftigt: Projekte, Erfahrungen, Gedanken und Dinge, die ich unterwegs lerne.</p>
-          <p>Und vermutlich wird sie nie ganz fertig sein. Das wäre schließlich auch ein bisschen langweilig.</p>
+          {t.aboutText.split("\n\n").map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
         </div>
         <p><a class="button button--primary" href={t.projectsPath}>{t.heroCta}</a></p>
       </div>
@@ -45,7 +43,7 @@ const t = languages[lang];
               <div class="home-experience__body home-experience__summary">
                 <div class="home-experience__summary-top">
                   <p class="home-experience__meta">{item.year}</p>
-                  <span class="home-experience__toggle" data-toggle-label>{item.year === "2022 – heute" ? "Weniger" : "Mehr"}</span>
+                  <span class="home-experience__toggle" data-toggle-label>{item.year === "2022 – heute" ? t.toggleLess : t.toggleMore}</span>
                 </div>
                 <h2>{item.role}</h2>
                 <p class="home-experience__company">{item.company} · {item.location}</p>
@@ -67,7 +65,7 @@ const t = languages[lang];
         if (!toggle) return;
 
         const sync = () => {
-          toggle.textContent = details.open ? "Weniger" : "Mehr";
+          toggle.textContent = details.open ? t.toggleLess : t.toggleMore;
         };
 
         sync();
@@ -126,12 +124,12 @@ const t = languages[lang];
           if (response.ok) {
             target.reset();
             if (status instanceof HTMLElement) {
-              status.textContent = "Danke! Deine Nachricht wurde verschickt.";
+              status.textContent = t.contactSuccess;
               status.classList.add("home-contact__status--success");
             }
           } else {
             if (status instanceof HTMLElement) {
-              status.textContent = "Leider konnte die Nachricht gerade nicht gesendet werden.";
+              status.textContent = t.contactError;
               status.classList.add("home-contact__status--error");
             }
           }

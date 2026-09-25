@@ -87,6 +87,19 @@ See also:
 - `.env.example`
 - `workers/README.md`
 
+## Project Images
+
+Project images live in `public/images/projects/` and are referenced from Markdown frontmatter via their public URL path.
+
+Example:
+
+```yaml
+images:
+  - src: /images/projects/example-1.jpg
+    alt: Example image
+    caption: Optional caption
+```
+
 ## URL Behavior
 
 The site uses consistent slash-based URLs. Internal links are written accordingly.
