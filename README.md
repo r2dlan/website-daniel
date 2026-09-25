@@ -65,7 +65,7 @@ bun run test
 
 ## Deployment
 
-The deployment flow builds the Astro site and publishes it through Cloudflare Pages.
+The deployment flow builds the Astro site and publishes it through Cloudflare. The root route is handled by the Cloudflare worker in `workers/locale-router.ts`.
 
 ```bash
 bun run deploy
@@ -75,7 +75,12 @@ bun run deploy
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
-- `CLOUDFLARE_PAGES_PROJECT_NAME`
+
+### Routing
+
+- `AT`, `CH`, `DE`, `LI`, `LU` → `/de/`
+- everything else → `/en/`
+- if no country information is available, English is the fallback
 
 ## Contact Form
 

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
 :root {
   color-scheme: light;
   --bg: #fbfcfd;
@@ -8,8 +10,6 @@
   --accent: #6f8c7b;
   --soft: #f4f8f9;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
 
 html {
   background: var(--bg);
