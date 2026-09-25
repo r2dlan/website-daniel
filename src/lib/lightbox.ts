@@ -13,12 +13,21 @@ export function initImageLightbox() {
   const prevButton = document.querySelector(".project-lightbox__nav--prev");
   const nextButton = document.querySelector(".project-lightbox__nav--next");
 
-  const triggers = Array.from(document.querySelectorAll(".project-image-trigger")) as LightboxTrigger[];
+  const triggers = Array.from(
+    document.querySelectorAll(".project-image-trigger"),
+  ) as LightboxTrigger[];
   const images = triggers
-    .map((trigger) => ({ src: trigger.dataset.fullSrc ?? "", alt: trigger.dataset.fullAlt ?? "" }))
+    .map((trigger) => ({
+      src: trigger.dataset.fullSrc ?? "",
+      alt: trigger.dataset.fullAlt ?? "",
+    }))
     .filter((image) => image.src);
 
-  if (!(dialog instanceof HTMLDialogElement) || !(dialogImage instanceof HTMLImageElement) || images.length === 0) {
+  if (
+    !(dialog instanceof HTMLDialogElement) ||
+    !(dialogImage instanceof HTMLImageElement) ||
+    images.length === 0
+  ) {
     return;
   }
 

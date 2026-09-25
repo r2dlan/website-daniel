@@ -5,19 +5,26 @@ export type ProjectEntry = CollectionEntry<"projects">;
 export type ProjectListEntry = ProjectEntry & { slug: string };
 
 export async function getProjects(language: "de" | "en") {
-  const entries = await getCollection("projects", (entry) => entry.data.language === language);
+  const entries = await getCollection(
+    "projects",
+    (entry) => entry.data.language === language,
+  );
 
   return entries
     .map((entry) => ({
       ...entry,
       slug: entry.id.split("/").pop()?.replace(/\.md$/, "") ?? entry.slug,
     }))
-    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) as ProjectListEntry[];
+    .sort(
+      (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+    ) as ProjectListEntry[];
 }
 
 export async function getProjectTopics(language: "de" | "en") {
   const entries = await getProjects(language);
-  return [...new Set(entries.flatMap((entry) => entry.data.topics))].sort((a, b) => a.localeCompare(b));
+  return [...new Set(entries.flatMap((entry) => entry.data.topics))].sort(
+    (a, b) => a.localeCompare(b),
+  );
 }
 
 export function matchesTopic(entry: ProjectEntry, topic: string) {

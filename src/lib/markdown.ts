@@ -1,9 +1,6 @@
 export function renderMarkdown(text: string) {
   const escapeHtml = (value: string) =>
-    value
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   const inline = (value: string) =>
     escapeHtml(value)

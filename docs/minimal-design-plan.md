@@ -15,12 +15,14 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 ## Stilrichtung
 
 ### Reduziert
+
 - reduzierte Formsprache
 - ausgewogene Leere
 - organische Materialien und Anmutung
 - stille, ruhige Präsentation
 
 ### Skandinavisch
+
 - hell, freundlich, luftig
 - funktional und ehrlich
 - einfache Navigation
@@ -29,19 +31,23 @@ Eine ruhige, hochwertige und reduzierte Webseite, die japanische Klarheit mit sk
 ## Seitenstruktur
 
 ### 1. Hero
+
 - kurzer Titel
 - ein prägnanter Satz
 - ein dezenter Call-to-Action
 
 ### 2. Über mich / Über die Marke
+
 - 2–5 kurze Absätze
 - Fokus auf Haltung, Qualität und Persönlichkeit
 
 ### 3. Leistungen / Themen
+
 - max. 3 Karten oder Punkte
 - keine langen Listen
 
 ### 4. Kontakt
+
 - sehr schlicht
 - direkt im Seitenverlauf eingebettet
 - Formular mit minimaler Reibung

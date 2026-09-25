@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { filterProjects, normalizeTopic, projectDateLabel, projectTopics } from "../src/lib/project-page";
+import {
+  filterProjects,
+  normalizeTopic,
+  projectDateLabel,
+  projectTopics,
+} from "../src/lib/project-page";
 
 const first = {
   data: { topics: ["Design", "Web"], date: new Date("2026-01-01") },

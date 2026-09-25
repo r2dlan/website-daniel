@@ -617,7 +617,11 @@ header.site-header {
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: 20px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--soft)), var(--surface));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--surface) 88%, var(--soft)),
+    var(--surface)
+  );
 }
 
 .project-pagination__button {
@@ -632,7 +636,10 @@ header.site-header {
   color: var(--text);
   font: inherit;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .project-pagination__button:hover:not(:disabled) {
@@ -677,7 +684,10 @@ header.site-header {
 
 .project-image-trigger img {
   border: 1px solid var(--line);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .project-gallery {
@@ -997,7 +1007,9 @@ a {
   }
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   font-weight: 500;
   line-height: 1.15;
