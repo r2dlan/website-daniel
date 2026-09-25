@@ -65,11 +65,17 @@ bun run test
 
 ## Deployment
 
-The deployment flow builds the Astro site and publishes it through Cloudflare.
+The deployment flow builds the Astro site and publishes it through Cloudflare Pages.
 
 ```bash
 bun run deploy
 ```
+
+### Required Cloudflare secrets
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_PAGES_PROJECT_NAME`
 
 ## Contact Form
 
