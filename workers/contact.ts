@@ -7,10 +7,13 @@ export interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     if (request.method !== "POST") {
-      return new Response(JSON.stringify({ ok: false, error: "Method not allowed" }), {
-        status: 405,
-        headers: { "content-type": "application/json; charset=utf-8" },
-      });
+      return new Response(
+        JSON.stringify({ ok: false, error: "Method not allowed" }),
+        {
+          status: 405,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        },
+      );
     }
 
     const formData = await request.formData();
@@ -26,10 +29,13 @@ export default {
     }
 
     if (!email || !message) {
-      return new Response(JSON.stringify({ ok: false, error: "Missing fields" }), {
-        status: 400,
-        headers: { "content-type": "application/json; charset=utf-8" },
-      });
+      return new Response(
+        JSON.stringify({ ok: false, error: "Missing fields" }),
+        {
+          status: 400,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        },
+      );
     }
 
     const body = {
@@ -49,10 +55,13 @@ export default {
     });
 
     if (!mailResponse.ok) {
-      return new Response(JSON.stringify({ ok: false, error: "Mail sending failed" }), {
-        status: 502,
-        headers: { "content-type": "application/json; charset=utf-8" },
-      });
+      return new Response(
+        JSON.stringify({ ok: false, error: "Mail sending failed" }),
+        {
+          status: 502,
+          headers: { "content-type": "application/json; charset=utf-8" },
+        },
+      );
     }
 
     return new Response(JSON.stringify({ ok: true }), {
