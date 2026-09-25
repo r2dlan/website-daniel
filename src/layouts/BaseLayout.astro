@@ -1,6 +1,7 @@
 ---
 import { languages, type LanguageCode } from "../lib/i18n";
 import LanguageNav from "../components/LanguageNav.astro";
+import "../styles/global.css";
 
 const { title = "Daniel Andres — About, Work, Tech", lang = "de" } = Astro.props as {
   title?: string;
@@ -41,7 +42,6 @@ const socialLinks = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
   <body>
     <div class="site-shell">
