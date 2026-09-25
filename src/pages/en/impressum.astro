@@ -1,6 +1,20 @@
 ---
-import { redirect } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { languages } from "../../lib/i18n";
 
-export async function GET() {
-  return Response.redirect(new URL("/en/legal/", Astro.site), 307);
-}
+const lang = "en";
+const t = languages[lang];
+---
+
+<BaseLayout lang={lang}>
+  <main>
+    <section class="card" style="max-width: 760px; padding: 48px;">
+      <p class="eyebrow">{t.legalTitle}</p>
+      <h1>{t.imprintTitle}</h1>
+      <p>{t.imprintIntro}</p>
+      <p>
+        <a href="/en/legal/">{t.footerImprint}</a>
+      </p>
+    </section>
+  </main>
+</BaseLayout>
