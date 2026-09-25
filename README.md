@@ -82,6 +82,10 @@ bun run deploy
 - everything else → `/en/`
 - if no country information is available, English is the fallback
 
+### Worker deployment
+
+The locale worker is deployed separately via `.github/workflows/deploy-worker.yml` when `workers/locale-router.ts` changes. Its own Wrangler config is `wrangler.worker.jsonc`.
+
 ## Contact Form
 
 The contact form sends data via `fetch` to a Cloudflare Worker.
