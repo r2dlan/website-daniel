@@ -21,14 +21,14 @@
     "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
-    "astro": "7.3.5"
+    "astro": "7.4.7"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.10",
-    "prettier": "3.9.9",
-    "prettier-plugin-astro": "1.0.1",
+    "@astrojs/check": "0.9.12",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
     "typescript": "6.0.3",
-    "vitest": "4.1.6",
-    "wrangler": "4.138.0"
+    "vitest": "4.1.12",
+    "wrangler": "4.158.0"
   }
 }
